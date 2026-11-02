@@ -27,3 +27,14 @@ python3 -m http.server 8000   # then open http://localhost:8000
 3. Back in Settings → Pages, tick **Enforce HTTPS** once the certificate is issued.
 
 > GitHub Pages on a free account requires the repository to be **public**.
+
+## Instagram / Facebook links
+Visitors who arrive through these links get "(הגעתי דרך אינסטגרם/פייסבוק)" added to their WhatsApp order message, so you can see where each order came from.
+
+| Use | Link |
+|---|---|
+| Instagram bio | `https://www.advachievement.com/ig/` |
+| Facebook page button / posts | `https://www.advachievement.com/fb/` |
+| Story/post about one pin | `https://www.advachievement.com/ig/#pin-kaveh` · `#pin-reim` · `#pin-shrulik` (use `/fb/` for Facebook) |
+
+Pin ids are the `id` fields in `assets/js/data.js`. To show the Facebook button on the site, set `social.facebook` there.
