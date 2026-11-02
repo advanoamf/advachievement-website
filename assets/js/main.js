@@ -28,7 +28,7 @@
       <article class="product card">
         <div class="product-img"><img src="${img(p.img)}" alt="${p.name}" loading="lazy"></div>
         <h3>${p.name}</h3>
-        <p class="price">₪${p.price}<small> לסיכה · מינימום ${p.min}</small></p>
+        <p class="price">₪${p.price}<small> לסיכה · כולל משלוח · מינימום ${p.min}</small></p>
         <div class="qty">
           <label for="q${i}">כמות</label>
           <input id="q${i}" type="number" min="${p.min}" step="1" value="${p.min}" inputmode="numeric">
@@ -40,7 +40,7 @@
       const input = a.parentElement.querySelector("input");
       const update = () => {
         const q = Math.max(p.min, parseInt(input.value, 10) || p.min);
-        a.href = wa(`היי, אשמח להזמין ${q} יחידות של ${p.name} (₪${p.price} לסיכה, סה"כ ₪${q * p.price}).`);
+        a.href = wa(`היי, אשמח להזמין מהמלאי ${q} יחידות של ${p.name} (₪${p.price} לסיכה, סה"כ ₪${q * p.price}).`);
       };
       input.addEventListener("input", update);
       input.addEventListener("change", () => { if ((+input.value || 0) < p.min) input.value = p.min; update(); });

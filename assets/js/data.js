@@ -13,7 +13,7 @@ window.SITE = {
     { from: 201, to: null, price: 8 }
   ],
 
-  // Ready-made pins (formerly the Wix store). min = minimum order quantity.
+  // Ready-made pins from stock (~500 units already produced), sold at a flat clearance price. min = minimum order quantity.
   products: [
     { name: "סיכת שבט קווה",  img: "shevet-kaveh.webp", price: 10, min: 40 },
     { name: "סיכת שבט רעים",  img: "shevet-reim.webp",  price: 10, min: 40 },
