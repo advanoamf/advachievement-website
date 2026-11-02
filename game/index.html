@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מצא את הסניף | סיכת סניף</title>
+<meta name="description" content="משחק זיכרון: מצאו את זוגות הסיכות של הסניפים בכמה שפחות מהלכים.">
+<link rel="icon" href="/assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Secular+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+  .game-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 0 0 24px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 16px; font-weight: 700; }
+  .stat span { color: var(--brand); }
+  .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 560px; margin: 0 auto 60px; perspective: 900px; }
+  .tile { aspect-ratio: 1; border: 0; padding: 0; background: none; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform .45s; }
+  .tile.flip, .tile.done { transform: rotateY(180deg); }
+  .face { position: absolute; inset: 0; border-radius: 14px; backface-visibility: hidden; display: grid; place-items: center; }
+  .back { background: var(--ink); color: var(--gold); font-family: "Secular One"; font-size: 2rem;
+          background-image: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--gold) 25%, transparent), transparent 55%); box-shadow: var(--shadow); }
+  .front { background: var(--surface); border: 2px solid var(--line); transform: rotateY(180deg); padding: 10%; }
+  .front img { width: 100%; height: 100%; object-fit: contain; }
+  .tile.done .front { border-color: var(--teal); background: color-mix(in srgb, var(--teal) 12%, var(--surface)); }
+  .win { text-align: center; margin: -30px auto 60px; }
+  .win[hidden] { display: none; }
+  @media (prefers-reduced-motion: reduce) { .tile { transition: none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">דלג לתוכן הראשי</a>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a href="/" class="brand"><img src="/assets/img/favicon.png" alt="" width="34" height="34"><span>סיכת סניף</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="תפריט"><span></span><span></span><span></span></button>
+    <nav id="nav" class="nav">
+      <a href="/#shop">סיכות</a><a href="/#gallery">עבודות</a><a href="/#pricing">מחירון</a><a href="/#faq">שאלות נפוצות</a>
+      <a href="/game/">מצא את הסניף</a><a href="/#contact" class="btn btn-sm">צור קשר</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <div class="page-hero">
+    <p class="eyebrow">משחק</p>
+    <h1>מצא את הסניף</h1>
+    <p class="sub">הפכו קלפים ומצאו את זוגות הסיכות. כמה מהלכים זה ייקח לכם?</p>
+  </div>
+  <div class="game-bar">
+    <div class="stat">מהלכים: <span id="moves">0</span></div>
+    <div class="stat">זמן: <span id="time">0:00</span></div>
+    <div class="stat">שיא: <span id="best">–</span></div>
+    <button class="btn btn-sm" id="restart">משחק חדש</button>
+  </div>
+  <div class="board" id="board" aria-label="לוח המשחק"></div>
+  <div class="win" id="win" hidden>
+    <h2>כל הכבוד! 🎉</h2>
+    <p class="sub" id="win-text"></p>
+    <a class="btn" href="/#contact">רוצים סיכה כזו לסניף שלכם?</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container foot"><span>© <span data-year>2026</span> סיכת סניף</span><nav><a href="/">לדף הבית</a><a href="/takanon/">תקנון תחרות</a></nav></div>
+</footer>
+
+<script src="/assets/js/data.js"></script>
+<script src="/assets/js/main.js"></script>
+<script>
+(function () {
+  const pool = ["kfar-yona", "ir-imperia", "houston", "hazorim", "sisu", "montreal", "kfar-eldad", "shabbat-ola", "ramaa", "shomron", "kiryat-shmuel", "shevet-haim", "ordim-hadar", "shrulik"];
+  const board = document.getElementById("board"), movesEl = document.getElementById("moves"),
+        timeEl = document.getElementById("time"), bestEl = document.getElementById("best"), win = document.getElementById("win");
+  let first = null, lock = false, moves = 0, matched = 0, t0 = 0, timer = null;
+  const KEY = "pin-memory-best";
+  const getBest = () => { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } };
+  const setBest = (v) => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) {} };
+  const fmt = (s) => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  const showBest = () => { const b = getBest(); bestEl.textContent = b ? `${b.moves} מהלכים` : "–"; };
+  const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  function start() {
+    clearInterval(timer); timer = null; first = null; lock = false; moves = 0; matched = 0;
+    movesEl.textContent = 0; timeEl.textContent = "0:00"; win.hidden = true;
+    const picks = shuffle(pool.slice()).slice(0, 8);
+    const deck = shuffle([...picks, ...picks]);
+    board.innerHTML = deck.map((n) => `
+      <button class="tile" data-n="${n}" aria-label="קלף סגור">
+        <span class="face back">?</span>
+        <span class="face front"><img src="/assets/img/${n}.webp" alt=""></span>
+      </button>`).join("");
+    showBest();
+  }
+
+  board.addEventListener("click", (e) => {
+    const t = e.target.closest(".tile");
+    if (!t || lock || t === first || t.classList.contains("done")) return;
+    if (!timer) { t0 = Date.now(); timer = setInterval(() => (timeEl.textContent = fmt(Math.floor((Date.now() - t0) / 1000))), 500); }
+    t.classList.add("flip"); t.setAttribute("aria-label", "סיכה");
+    if (!first) { first = t; return; }
+    moves++; movesEl.textContent = moves;
+    if (first.dataset.n === t.dataset.n) {
+      first.classList.add("done"); t.classList.add("done"); first = null; matched++;
+      if (matched === 8) finish();
+    } else {
+      lock = true; const a = first; first = null;
+      setTimeout(() => { a.classList.remove("flip"); t.classList.remove("flip"); a.setAttribute("aria-label", "קלף סגור"); t.setAttribute("aria-label", "קלף סגור"); lock = false; }, 850);
+    }
+  });
+
+  function finish() {
+    clearInterval(timer); timer = null;
+    const secs = Math.floor((Date.now() - t0) / 1000);
+    const b = getBest();
+    const rec = !b || moves < b.moves;
+    if (rec) setBest({ moves, secs });
+    document.getElementById("win-text").textContent = `סיימתם ב־${moves} מהלכים ו־${fmt(secs)} דקות.` + (rec ? " שיא חדש!" : "");
+    win.hidden = false; showBest();
+  }
+
+  document.getElementById("restart").addEventListener("click", start);
+  start();
+})();
+</script>
+</body>
+</html>
