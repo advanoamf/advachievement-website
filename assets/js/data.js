@@ -2,6 +2,15 @@
 window.SITE = {
   whatsapp: "972504235050",
 
+  // Social pages. Leave "" to hide a button.
+  social: {
+    instagram: "https://www.instagram.com/noam_lapels/",
+    facebook: ""
+  },
+
+  // Traffic sources: visitors arriving with ?src=<key> get this note added to their WhatsApp message.
+  sources: { ig: "אינסטגרם", fb: "פייסבוק" },
+
   // Price per pin by quantity (from the original price list). "to: null" = and above.
   prices: [
     { from: 20,  to: 29,   price: 25 },
@@ -13,11 +22,11 @@ window.SITE = {
     { from: 201, to: null, price: 8 }
   ],
 
-  // Ready-made pins (formerly the Wix store). min = minimum order quantity.
+  // Ready-made pins from stock (~500 units already produced), sold at a flat clearance price. min = minimum order quantity.
   products: [
-    { name: "סיכת שבט קווה",  img: "shevet-kaveh.webp", price: 10, min: 40 },
-    { name: "סיכת שבט רעים",  img: "shevet-reim.webp",  price: 10, min: 40 },
-    { name: "סיכת שרוליק",    img: "shrulik.webp",      price: 10, min: 40 }
+    { id: "kaveh", name: "סיכת שבט קווה",  img: "shevet-kaveh.webp", price: 10, min: 40 },
+    { id: "reim", name: "סיכת שבט רעים",  img: "shevet-reim.webp",  price: 10, min: 40 },
+    { id: "shrulik", name: "סיכת שרוליק",    img: "shrulik.webp",      price: 10, min: 40 }
   ],
 
   // Portfolio. cat: youth | tribe | community

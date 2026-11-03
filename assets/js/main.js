@@ -3,7 +3,33 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const img = (f) => "/assets/img/" + f;
-  const wa = (text) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(text)}`;
+  // Traffic source (?src=ig / ?src=fb, or utm_source=instagram/facebook), remembered for the visit
+  const SRC_KEY = "visit-src";
+  const params = new URLSearchParams(location.search);
+  const utm = (params.get("utm_source") || "").toLowerCase();
+  let src = params.get("src") || (utm.startsWith("insta") ? "ig" : utm.startsWith("face") || utm === "fb" ? "fb" : "");
+  try {
+    if (src && S.sources[src]) sessionStorage.setItem(SRC_KEY, src);
+    else src = sessionStorage.getItem(SRC_KEY) || "";
+  } catch (e) {}
+  const srcNote = S.sources[src] ? ` (הגעתי דרך ${S.sources[src]})` : "";
+  const wa = (text) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(text + srcNote)}`;
+
+  // Tag the static WhatsApp links with the source too
+  if (srcNote) {
+    $$('a[href^="https://wa.me/"]').forEach((a) => {
+      if (a.closest("[data-products]")) return;
+      const u = new URL(a.href);
+      u.searchParams.set("text", (u.searchParams.get("text") || "היי") + srcNote);
+      a.href = u.toString();
+    });
+  }
+
+  // Social buttons
+  $$("[data-social]").forEach((a) => {
+    const url = S.social[a.dataset.social];
+    if (url) a.href = url; else a.remove();
+  });
 
   // Year
   $$("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
@@ -25,10 +51,10 @@
   const prodWrap = $("[data-products]");
   if (prodWrap) {
     prodWrap.innerHTML = S.products.map((p, i) => `
-      <article class="product card">
+      <article class="product card" id="pin-${p.id}">
         <div class="product-img"><img src="${img(p.img)}" alt="${p.name}" loading="lazy"></div>
         <h3>${p.name}</h3>
-        <p class="price">₪${p.price}<small> לסיכה · מינימום ${p.min}</small></p>
+        <p class="price">₪${p.price}<small> לסיכה · כולל משלוח · מינימום ${p.min}</small></p>
         <div class="qty">
           <label for="q${i}">כמות</label>
           <input id="q${i}" type="number" min="${p.min}" step="1" value="${p.min}" inputmode="numeric">
@@ -40,12 +66,18 @@
       const input = a.parentElement.querySelector("input");
       const update = () => {
         const q = Math.max(p.min, parseInt(input.value, 10) || p.min);
-        a.href = wa(`היי, אשמח להזמין ${q} יחידות של ${p.name} (₪${p.price} לסיכה, סה"כ ₪${q * p.price}).`);
+        a.href = wa(`היי, אשמח להזמין מהמלאי ${q} יחידות של ${p.name} (₪${p.price} לסיכה, סה"כ ₪${q * p.price}).`);
       };
       input.addEventListener("input", update);
       input.addEventListener("change", () => { if ((+input.value || 0) < p.min) input.value = p.min; update(); });
       update();
     });
+    // Deep link to a single pin (e.g. /?src=ig#pin-kaveh): scroll to it and highlight it
+    const target = location.hash.startsWith("#pin-") && document.getElementById(location.hash.slice(1));
+    if (target) {
+      target.classList.add("spotlight");
+      requestAnimationFrame(() => target.scrollIntoView({ block: "center" }));
+    }
   }
 
   // Gallery + filters + lightbox
