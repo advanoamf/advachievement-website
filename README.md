@@ -12,21 +12,19 @@ Replaces the old Wix site. Plain HTML/CSS/JS, so there's no build step and no su
 | `assets/js/data.js` | **Edit here:** prices, products, gallery images, WhatsApp number |
 | `assets/img/` | Optimized images (WebP) taken from the old Wix site |
 | `scarves/`, `sale/`, `צור-קשר/` … | Redirects from the old Wix URLs so existing links keep working |
-| `CNAME` | Custom domain for GitHub Pages (`www.advachievement.com`) |
 
 ## Run locally
 ```bash
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-## Publish (GitHub Pages)
-1. Repo → Settings → Pages → Source: *Deploy from a branch*, branch `main`, folder `/ (root)`.
-2. At your domain's DNS provider:
-   - `www` → **CNAME** → `advanoamf.github.io`
-   - apex `advachievement.com` → **A** records `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-3. Back in Settings → Pages, tick **Enforce HTTPS** once the certificate is issued.
+## Hosting (Netlify)
+The site is hosted on Netlify (project `advachievement-website`, free plan), which deploys automatically from the `main` branch. There's no build step; it publishes the repo root.
 
-> GitHub Pages on a free account requires the repository to be **public**.
+- Primary domain: `www.advachievement.com`; `advachievement.com` redirects to it. HTTPS is a Let's Encrypt certificate that Netlify renews.
+- DNS is at Squarespace Domains: `@` **A** `75.2.60.5` and `www` **CNAME** `advachievement-website.netlify.app`.
+- The other DNS records (Google Workspace email, `app`, `zaka`) belong to other services.
+- The free plan adds a "Powered by Netlify" badge in the bottom-right corner, so the WhatsApp button sits above it.
 
 ## Instagram / Facebook links
 Visitors who arrive through these links get "(הגעתי דרך אינסטגרם/פייסבוק)" added to their WhatsApp order message, so you can see where each order came from.
