@@ -139,8 +139,8 @@ h3 { font-size: 1.25rem; }
 .product .btn { margin-top: auto; }
 .product { padding: 18px; display: flex; flex-direction: column; gap: 10px; }
 .product-img { background: radial-gradient(circle, var(--bg-alt), var(--surface) 70%); border-radius: 12px; aspect-ratio: 1; display: grid; place-items: center; padding: 20px; }
-.product-img { overflow: hidden; }
-.product-img img { width: 100%; height: 100%; object-fit: contain; transition: transform .3s; }
+.product-img { overflow: hidden; position: relative; }
+.product-img img { position: absolute; inset: 20px; width: calc(100% - 40px); height: calc(100% - 40px); object-fit: contain; transition: transform .3s; }
 .product:hover .product-img img { transform: scale(1.06) rotate(-3deg); }
 .product h3 { margin: 6px 0 0; }
 .price { margin: 0; font-weight: 800; font-size: 1.4rem; color: var(--brand); }
@@ -158,8 +158,8 @@ input[type="number"] {
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
 .g-item { border: 0; padding: 14px; background: var(--surface); border-radius: 14px; aspect-ratio: 1; display: grid; place-items: center; cursor: zoom-in; transition: transform .2s, box-shadow .2s; }
 .g-item:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-.g-item { overflow: hidden; min-width: 0; }
-.g-item img { width: 100%; height: 100%; object-fit: contain; }
+.g-item { overflow: hidden; min-width: 0; position: relative; }
+.g-item img { position: absolute; inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); object-fit: contain; }
 .g-item[hidden] { display: none; }
 @media (max-width: 480px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
 
@@ -240,10 +240,8 @@ input[type="number"] {
 .prose hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
 .prose [dir="ltr"] { text-align: left; }
 
-/* Blend white photo backgrounds into the cards (light theme) */
-.tribe-row img, .product-img img, .g-item img, .front img { mix-blend-mode: multiply; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :is(.tribe-row img, .product-img img, .g-item img, .front img) { mix-blend-mode: normal; border-radius: 10px; } }
-:root[data-theme="dark"] :is(.tribe-row img, .product-img img, .g-item img, .front img) { mix-blend-mode: normal; border-radius: 10px; }
+/* Pin images are transparent cut-outs; a soft shadow lifts them off the cards */
+.tribe-row img, .product-img img, .g-item img, .front img { filter: drop-shadow(0 3px 5px rgba(20, 25, 45, .28)); }
 
 /* Deep-linked product (e.g. from an Instagram story) */
 .product.spotlight { outline: 3px solid var(--gold); outline-offset: 4px; animation: pulse 1.6s ease-out 2; }
