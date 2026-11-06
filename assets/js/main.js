@@ -1,5 +1,13 @@
 (function () {
   const S = window.SITE;
+  // Text that differs by language; data-en.js fills S.t on the English site
+  const T = {
+    hi: "היי", currency: "₪", locale: "he-IL", enlarge: "הגדלה: ",
+    cameVia: (name) => ` (הגעתי דרך ${name})`,
+    minimum: (n) => `מינימום ${n} סיכות`,
+    total: (sum, each) => `<strong>${sum}</strong> סה"כ · ${each} לסיכה`,
+    ...S.t
+  };
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const img = (f) => "/assets/img/" + f;
@@ -12,7 +20,7 @@
     if (src && S.sources[src]) sessionStorage.setItem(SRC_KEY, src);
     else src = sessionStorage.getItem(SRC_KEY) || "";
   } catch (e) {}
-  const srcNote = S.sources[src] ? ` (הגעתי דרך ${S.sources[src]})` : "";
+  const srcNote = S.sources[src] ? T.cameVia(S.sources[src]) : "";
   const wa = (text) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(text + srcNote)}`;
 
   // Tag the static WhatsApp links with the source too
@@ -20,7 +28,7 @@
     $$('a[href^="https://wa.me/"]').forEach((a) => {
       if (a.closest("[data-products]")) return;
       const u = new URL(a.href);
-      u.searchParams.set("text", (u.searchParams.get("text") || "היי") + srcNote);
+      u.searchParams.set("text", (u.searchParams.get("text") || T.hi) + srcNote);
       a.href = u.toString();
     });
   }
@@ -84,7 +92,7 @@
   const gal = $("[data-gallery]");
   if (gal) {
     gal.innerHTML = S.gallery.map((g) => `
-      <button class="g-item" data-cat="${g.cat}" aria-label="הגדלה: ${g.alt}">
+      <button class="g-item" data-cat="${g.cat}" aria-label="${T.enlarge}${g.alt}">
         <img src="${img(g.img)}" alt="${g.alt}" loading="lazy">
       </button>`).join("");
     $$(".chip").forEach((c) => c.addEventListener("click", () => {
@@ -105,15 +113,15 @@
   // Price table + calculator
   const tbody = $("[data-prices]");
   if (tbody) {
-    tbody.innerHTML = S.prices.map((r) => `<tr><td><span dir="ltr">${r.to ? `${r.from}–${r.to}` : `${r.from - 1}+`}</span></td><td>₪${r.price}</td></tr>`).join("");
+    tbody.innerHTML = S.prices.map((r) => `<tr><td><span dir="ltr">${r.label || (r.to ? `${r.from}–${r.to}` : `${r.from - 1}+`)}</span></td><td>${T.currency}${r.price}</td></tr>`).join("");
     const qty = $("#qty"), out = $("#calc-out");
     const calc = () => {
       const q = parseInt(qty.value, 10);
       const row = S.prices.find((r) => q >= r.from && (r.to === null || q <= r.to));
       $$("tr", tbody).forEach((tr, i) => tr.classList.toggle("on", S.prices[i] === row));
       out.innerHTML = !q || q < S.prices[0].from
-        ? `מינימום ${S.prices[0].from} סיכות`
-        : `<strong>₪${(q * row.price).toLocaleString("he-IL")}</strong> סה"כ · ₪${row.price} לסיכה`;
+        ? T.minimum(S.prices[0].from)
+        : T.total(T.currency + (q * row.price).toLocaleString(T.locale), T.currency + row.price);
     };
     qty.addEventListener("input", calc); calc();
   }
