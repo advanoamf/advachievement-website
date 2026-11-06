@@ -247,3 +247,9 @@ input[type="number"] {
 .product.spotlight { outline: 3px solid var(--gold); outline-offset: 4px; animation: pulse 1.6s ease-out 2; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 60%, transparent); } 100% { box-shadow: 0 0 0 18px transparent; } }
 @media (prefers-reduced-motion: reduce) { .product.spotlight { animation: none; } }
+
+/* English site */
+.why { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+.why li { padding: 22px; }
+.why p { margin: 0; color: var(--muted); }
+[dir="ltr"] .wa-float { inset-inline: auto 20px; }
