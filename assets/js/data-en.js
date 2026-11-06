@@ -41,6 +41,7 @@
     "shevet-reim.webp": "Shevet Reim wing pin",
     "shevet-kaveh.webp": "Shevet Kaveh wing pin",
     "shevet-haim.webp": "Shevet Haim wing pin",
+    "amikam.webp": "Shevet Amikam wing pin",
     "kaveh-ariel.webp": "Kaveh Ariel wing pin with a panda",
     "nirit.webp": "Nirit wing pin",
     "wings-a.webp": "Silver wing pin with the letter A",

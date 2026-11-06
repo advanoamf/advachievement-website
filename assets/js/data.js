@@ -50,6 +50,7 @@ window.SITE = {
     { img: "shevet-reim.webp",      cat: "tribe",     alt: "סיכת שבט רעים" },
     { img: "shevet-kaveh.webp",     cat: "tribe",     alt: "סיכת שבט קווה" },
     { img: "shevet-haim.webp",      cat: "tribe",     alt: "סיכת שבט חיים" },
+    { img: "amikam.webp",           cat: "tribe",     alt: "סיכת שבט עמיקם" },
     { img: "kaveh-ariel.webp",      cat: "tribe",     alt: "סיכת קווה אריאל" },
     { img: "nirit.webp",            cat: "tribe",     alt: "סיכת נירית" },
     { img: "wings-a.webp",          cat: "tribe",     alt: "סיכת כנפיים" },
