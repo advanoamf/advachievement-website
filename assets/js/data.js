@@ -5,7 +5,7 @@ window.SITE = {
   // Social pages. Leave "" to hide a button.
   social: {
     instagram: "https://www.instagram.com/noam_lapels/",
-    facebook: ""
+    facebook: "https://www.facebook.com/profile.php?id=100086111006985"
   },
 
   // Traffic sources: visitors arriving with ?src=<key> get this note added to their WhatsApp message.
