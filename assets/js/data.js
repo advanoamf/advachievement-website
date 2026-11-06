@@ -47,10 +47,13 @@ window.SITE = {
     { img: "ba-3.webp",             cat: "youth",     alt: "סיכת סניף בני עקיבא" },
     { img: "ba-4.webp",             cat: "youth",     alt: "סיכת סניף בני עקיבא" },
     { img: "ba-5.webp",             cat: "youth",     alt: "סיכת סניף בני עקיבא" },
+    { img: "ba-black.webp",         cat: "youth",     alt: "סיכת בני עקיבא שחורה" },
+    { img: "afik.webp",             cat: "youth",     alt: "סיכת שכב\"ג אפיק" },
     { img: "shevet-reim.webp",      cat: "tribe",     alt: "סיכת שבט רעים" },
     { img: "shevet-kaveh.webp",     cat: "tribe",     alt: "סיכת שבט קווה" },
     { img: "shevet-haim.webp",      cat: "tribe",     alt: "סיכת שבט חיים" },
     { img: "amikam.webp",           cat: "tribe",     alt: "סיכת שבט עמיקם" },
+    { img: "bonim.webp",            cat: "tribe",     alt: "סיכת צוות הבונים" },
     { img: "kaveh-ariel.webp",      cat: "tribe",     alt: "סיכת קווה אריאל" },
     { img: "nirit.webp",            cat: "tribe",     alt: "סיכת נירית" },
     { img: "wings-a.webp",          cat: "tribe",     alt: "סיכת כנפיים" },
@@ -58,6 +61,7 @@ window.SITE = {
     { img: "shrulikim.webp",        cat: "community", alt: "סיכות שרוליקים – אשכול בן יהודה" },
     { img: "eshkol-or-rehovot.webp",cat: "community", alt: "סיכת אשכול אורט רחובות" },
     { img: "ordim-hadar.webp",      cat: "community", alt: "סיכת אורדים הדר" },
-    { img: "green-mask.webp",       cat: "community", alt: "סיכה מעוצבת – דמות ירוקה" }
+    { img: "green-mask.webp",       cat: "community", alt: "סיכה מעוצבת – דמות ירוקה" },
+    { img: "mega.webp",             cat: "community", alt: "סיכת Mega – מגן דוד, לב וכנף" }
   ]
 };
