@@ -131,7 +131,6 @@ h3 { font-size: 1.25rem; }
 .tribe-row img { aspect-ratio: 16/10; object-fit: contain; width: 100%; }
 .tribe-row figcaption { font-family: "Secular One", sans-serif; font-size: 1.15rem; margin-top: 8px; }
 .tribe-row small { display: block; font-family: "Heebo"; font-size: .85rem; color: var(--brand); }
-.mystery { border-style: dashed !important; border-color: var(--brand) !important; }
 @media (max-width: 700px) { .tribe-row { grid-template-columns: repeat(2, 1fr); } }
 
 /* Products */
