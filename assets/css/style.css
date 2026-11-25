@@ -125,6 +125,14 @@ h3 { font-size: 1.25rem; }
 
 /* Tribes */
 .tribes { padding-top: 20px; }
+/* Hanukkah promo */
+.promo { padding-bottom: 20px; }
+.promo-grid { display: grid; grid-template-columns: minmax(0, 380px) 1fr; gap: clamp(24px, 5vw, 56px); align-items: center; }
+.nis { font-family: "Heebo", sans-serif; font-weight: 800; }
+.promo-img img { border-radius: var(--radius); box-shadow: var(--shadow); }
+.promo-list { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 10px; font-weight: 500; }
+.promo-list li::before { content: "✓"; color: var(--gold); font-weight: 800; margin-inline-end: 10px; }
+@media (max-width: 760px) { .promo-grid { grid-template-columns: 1fr; } .promo-img { max-width: 420px; margin-inline: auto; } }
 .tribe-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .tribe-row figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 14px; text-align: center; transition: transform .2s; }
 .tribe-row figure:hover { transform: translateY(-4px) rotate(-1deg); }

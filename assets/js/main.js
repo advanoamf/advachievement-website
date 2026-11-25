@@ -39,6 +39,9 @@
     if (url) a.href = url; else a.remove();
   });
 
+  // Time-limited sections (data-until="YYYY-MM-DD"): removed from that day on
+  $$("[data-until]").forEach((el) => { if (new Date() >= new Date(el.dataset.until + "T00:00:00")) el.remove(); });
+
   // Year
   $$("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
 
